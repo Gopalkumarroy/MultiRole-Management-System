@@ -1,0 +1,137 @@
+﻿@model Sewa360.Areas.Admin.Models.ManagerDashboardViewModel
+@using Newtonsoft.Json
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_dashboardmanagerlayout.cshtml";
+}
+
+<style>
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .total-sales {
+        font-size: 16px;
+        font-weight: 500;
+        color: #333;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-3">
+        <a href="@Url.Action("TeamList", "Manager")" class="text-decoration-none text-dark">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6>Total Partners</h6>
+                    <h2>@Model.TotalPartners</h2>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-3">
+        <a href="@Url.Action("PartnerKYCList", "Manager")" class="text-decoration-none text-dark">
+            <div class="card text-center">
+                <div class="card-body text-success">
+                    <h6>KYC Approved</h6>
+                    <h2>@Model.KYCSubmitted</h2>
+                </div>
+            </div>
+        </a>
+    </div>
+
+   @*  <div class="col-md-3">
+        <a href="@Url.Action("PartnerKYCList", "Manager")" class="text-decoration-none text-dark">
+            <div class="card text-center">
+                <div class="card-body text-warning">
+                    <h6>KYC Pending</h6>
+                    <h2>@Model.KYCPending</h2>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-3">
+        <a href="@Url.Action("PartnerKYCList", "Manager")" class="text-decoration-none text-dark">
+            <div class="card text-center">
+                <div class="card-body text-danger">
+                    <h6>KYC Rejected</h6>
+                    <h2>@Model.KYCRejected</h2>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-3 mt-3">
+        <a href="@Url.Action("PartnerKYCList", "Manager")" class="text-decoration-none text-dark">
+            <div class="card text-center">
+                <div class="card-body text-primary">
+                    <h6>KYC Not Applied Yet</h6>
+                    <h2>@Model.KYCNotDone</h2>
+                </div>
+            </div>
+        </a>
+    </div> *@
+
+    <div class="col-md-3 ">
+        <a href="@Url.Action("ServiceProviderList", "ServiceProvider", new { area = "Admin" })" class="text-decoration-none text-dark">
+            <div class="card text-center">
+                <div class="card-body text-primary">
+                    <h6>Total ServiceProvider</h6>
+                    <h2>@Model.TotalServiceProviders</h2>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Sales Report -->
+    <div class="col-md-12 mt-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="dashboard-header">
+                    <h3>Sales Report</h3>
+                    <div class="total-sales">Total Sales: ₹@Model.TotalSales.ToString("N0")</div>
+                </div>
+                <canvas id="salesChart" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const salesData = @Html.Raw(JsonConvert.SerializeObject(Model.MonthlySales));
+        const ctx = document.getElementById('salesChart').getContext('2d');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], // Adjust labels if you have 12 months
+                datasets: [{
+                    label: 'Monthly Sales (₹)',
+                    data: salesData,
+                    borderColor: '#007bff',
+                    backgroundColor: '#007bff',
+                    fill: false,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}

@@ -1,0 +1,182 @@
+﻿@model Sewa360.Models.ServiceProviderKYC
+
+@{
+    ViewBag.Title = "Service Provider KYC Upload";
+    Layout = "~/views/shared/_layoutserviceprovider.cshtml";
+}
+
+<style>
+    .form-container {
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .card-header h5 {
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+
+    .preview-area img {
+        max-width: 100%;
+        height: auto;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
+
+    .preview-area a {
+        display: inline-block;
+        margin-top: 10px;
+    }
+
+    @@media (max-width: 576px) {
+        .form-label
+
+    {
+        font-size: 0.9rem;
+    }
+
+    .btn-lg {
+        width: 100%;
+    }
+
+    .card {
+        padding: 1rem !important;
+    }
+
+    .preview-area img {
+        max-height: 150px;
+    }
+
+    }
+</style>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success" id="successAlert">
+        @TempData["Success"]
+    </div>
+    <script>
+        setTimeout(() => {
+            const alert = document.getElementById("successAlert");
+            if (alert) {
+                alert.style.transition = "opacity 0.5s ease";
+                alert.style.opacity = "0";
+                setTimeout(() => alert.remove(), 500);
+            }
+        }, 5000);
+    </script>
+}
+
+<div class="container-fluid mt-4 px-2 px-md-4">
+    <div class="row justify-content-center">
+        <div class="col-12 form-container">
+            <div class="card shadow rounded-4 p-3 p-md-4">
+                <div class="card-header bg-info text-white text-center">
+                    <h5 class="mb-0">Service Provider KYC Submission</h5>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("ServiceProviderKYC", "ServiceProvider", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.HiddenFor(m => m.ServiceProvider_Id)
+
+                        <div class="row">
+                            <div class="col-12 col-md-6 mb-3">
+                                @Html.LabelFor(m => m.AadhaarNumber, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.AadhaarNumber, new { @class = "form-control", placeholder = "Enter Aadhaar number" })
+                                @Html.ValidationMessageFor(m => m.AadhaarNumber, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-12 col-md-6 mb-3">
+                                @Html.LabelFor(m => m.PanNumber, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.PanNumber, new { @class = "form-control", placeholder = "Enter PAN number" })
+                                @Html.ValidationMessageFor(m => m.PanNumber, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-md-6 mb-3">
+                                <label class="form-label">Upload Aadhaar Document</label>
+                                <input type="file" name="AadhaarDoc" class="form-control" accept=".jpg,.jpeg,.png,.pdf" onchange="previewFile(this, 'aadhaarPreview')" />
+                                <div id="aadhaarPreview" class="preview-area mt-2 text-center"></div>
+                            </div>
+                            <div class="col-12 col-md-6 mb-3">
+                                <label class="form-label">Upload PAN Card Document</label>
+                                <input type="file" name="PanCardDoc" class="form-control" accept=".jpg,.jpeg,.png,.pdf" onchange="previewFile(this, 'panPreview')" />
+                                <div id="panPreview" class="preview-area mt-2 text-center"></div>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="row">
+                            <div class="col-12 col-md-6 mb-3">
+                                @Html.LabelFor(m => m.AccountHolderName, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.AccountHolderName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.AccountHolderName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-12 col-md-6 mb-3">
+                                @Html.LabelFor(m => m.BankName, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.BankName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.BankName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-md-6 mb-3">
+                                @Html.LabelFor(m => m.AccountNumber, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.AccountNumber, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-12 col-md-6 mb-3">
+                                @Html.LabelFor(m => m.IFSC, new { @class = "form-label" })
+                                @Html.TextBoxFor(m => m.IFSC, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.IFSC, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">Submit KYC</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        function previewFile(input, previewId) {
+            const file = input.files[0];
+            const preview = document.getElementById(previewId);
+            preview.innerHTML = "";
+
+            if (file) {
+                const fileType = file.type;
+                const reader = new FileReader();
+
+                if (fileType.includes("image")) {
+                    reader.onload = e => {
+                        const img = document.createElement("img");
+                        img.src = e.target.result;
+                        img.className = "img-thumbnail mt-2";
+                        preview.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                } else if (fileType === "application/pdf") {
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(file);
+                    link.target = "_blank";
+                    link.className = "btn btn-outline-primary mt-2";
+                    link.innerText = "View PDF";
+                    preview.appendChild(link);
+                } else {
+                    const msg = document.createElement("p");
+                    msg.className = "text-danger";
+                    msg.innerText = "Unsupported file type.";
+                    preview.appendChild(msg);
+                }
+            }
+        }
+    </script>
+}

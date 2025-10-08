@@ -1,0 +1,35 @@
+﻿@model List<Sewa360.Areas.Admin.Models.Partner>
+
+<h2>Partners List</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Partner ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Contact</th>
+            <th>Password</th>
+            <th>Action</th> <!-- Action column added -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var partner in Model)
+        {
+            <tr>
+                <td>@partner.Partner_Id</td>
+                <td>@partner.First_Name</td>
+                <td>@partner.Last_Name</td>
+                <td>@partner.Partner_Email</td>
+                <td>@partner.Partner_Phone</td>
+                <td>@partner.Partner_Password</td>
+                <td>
+                    <!-- Action buttons -->
+                    <a asp-action="EditPartner" asp-route-id="@partner.Partner_Id" class="btn btn-sm btn-primary">Edit</a>
+                    <a asp-action="DeletePartner" asp-route-id="@partner.Partner_Id" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this partner?');">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

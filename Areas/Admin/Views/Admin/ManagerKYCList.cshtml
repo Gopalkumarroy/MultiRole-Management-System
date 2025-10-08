@@ -1,0 +1,172 @@
+﻿@model List<Sewa360.Models.ManagerKYC>
+
+@{
+    ViewBag.Title = "Manager KYC List";
+    Layout = "~/Areas/Admin/Views/Shared/_dashboardlayout.cshtml";
+}
+
+@if (TempData["Message"] != null)
+{
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+        </div>
+}
+ 
+<h2 class="mb-4">All Manager KYC Submissions</h2>
+
+<div style="overflow-x: auto;">
+    <table id="ManagerKYCTable" class="table table-bordered table-striped table-hover align-middle text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>S.No</th>
+                <th>Manager ID</th>
+                <th>Aadhaar No</th>
+                <th>PAN No</th>
+                <th>Account Holder</th>
+                <th>Bank Name</th>
+                <th>Aadhaar Doc</th>
+                <th>PAN Doc</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                int i = 1;
+                foreach (var item in Model)
+                {
+                            <tr>
+                                <td class="text-center">@i</td>
+                                <td class="text-center">@item.Manager_Id</td>
+                                <td>@item.AadhaarNumber</td>
+                                <td>@item.PanNumber</td>
+                                <td>@item.AccountHolderName</td>
+                                <td>@item.BankName</td>
+
+                                <td>
+                            @if (!string.IsNullOrEmpty(item.AadhaarDocumentPath))
+                            {
+                                            <img src="@item.AadhaarDocumentPath"
+                                                 class="img-thumbnail thumb-img"
+                                                 alt="Aadhaar"
+                                                 data-img="@item.AadhaarDocumentPath"
+                                                 data-doc="Aadhaar" />
+                            }
+                            else
+                            {
+                                            <span class="text-muted">Not uploaded</span>
+                            }
+                                </td>
+
+                                <td>
+                            @if (!string.IsNullOrEmpty(item.PanCardDocumentPath))
+                            {
+                                            <img src="@item.PanCardDocumentPath"
+                                                 class="img-thumbnail thumb-img"
+                                                 alt="PAN"
+                                                 data-img="@item.PanCardDocumentPath"
+                                                 data-doc="PAN" />
+                            }
+                            else
+                            {
+                                            <span class="text-muted">Not uploaded</span>
+                            }
+                                </td>
+
+                                <td>
+                                    <span class="badge @(item.KycStatus == "Approved" ? "bg-success" :
+                                                 item.KycStatus == "Rejected" ? "bg-danger" :
+                                                 "bg-warning text-dark")">
+                                @item.KycStatus
+                                    </span>
+                                </td>
+
+                                <td>
+                            @if (item.KycStatus != "Approved")
+                            {
+                                <a href="@Url.Action("ApproveManagerKYC", "Admin", new { id = item.KYC_Id })" class="btn btn-sm btn-success">Approve</a>
+                                <a href="@Url.Action("RejectManagerKYC", "Admin", new {  id = item.KYC_Id })" class="btn btn-sm btn-danger">Reject</a>
+
+                            }
+                                </td>
+                            </tr>
+                    i++;
+                }
+            }
+            else
+            {
+                    <tr>
+                        <td colspan="10" class="text-center">No KYC submissions found.</td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="docPreviewModal" tabindex="-1" aria-labelledby="docPreviewLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="docPreviewLabel">Document Preview</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="previewImage" src="" class="img-fluid rounded shadow" style="max-height: 500px;" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Style -->
+<style>
+    .thumb-img {
+        max-height: 60px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+
+    .thumb-img:hover {
+        transform: scale(1.05);
+    }
+</style>
+
+@section Scripts {
+        <script>
+            $(document).ready(function () {
+                $(".thumb-img").on("click", function () {
+                    const imgSrc = $(this).data("img");
+                    const docType = $(this).data("doc");
+
+                    $("#previewImage").attr("src", imgSrc);
+                    $("#docPreviewLabel").text(docType + " Document Preview");
+
+                    const modal = new bootstrap.Modal(document.getElementById("docPreviewModal"));
+                    modal.show();
+                });
+
+                setTimeout(function () {
+                    $(".alert").fadeOut("slow");
+                }, 5000);
+            });
+        </script>
+
+        <!-- DataTables -->
+        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <!-- DataTables CSS -->
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+
+        <script>
+            $(document).ready(function () {
+                $('#ManagerKYCTable').DataTable({
+                    responsive: true
+                });
+            });
+        </script>
+}
+

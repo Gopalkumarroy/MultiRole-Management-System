@@ -1,0 +1,132 @@
+﻿@model Sewa360.Models.ServiceProviderKYC
+
+@{
+    ViewBag.Title = "Edit Service Provider KYC";
+    Layout = "~/views/shared/_layoutserviceprovider.cshtml";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success" id="successAlert">
+        @TempData["Success"]
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger" id="errorAlert">
+        @TempData["Error"]
+    </div>
+}
+
+<div class="container mt-5">
+    <div class="card shadow rounded-4">
+        <div class="card-header bg-primary text-white text-center">
+            <h4>Edit Service Provider KYC</h4>
+        </div>
+        <div class="card-body p-4">
+            <form asp-action="ServiceProviderEdit" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="KYC_Id" />
+                <input type="hidden" asp-for="ServiceProvider_Id" />
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="AadhaarNumber" class="form-label"></label>
+                        <input asp-for="AadhaarNumber" class="form-control" placeholder="Enter Aadhaar number" />
+                        <span asp-validation-for="AadhaarNumber" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="PanNumber" class="form-label"></label>
+                        <input asp-for="PanNumber" class="form-control" placeholder="Enter PAN number" />
+                        <span asp-validation-for="PanNumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header bg-light">Aadhaar Document</div>
+                            <div class="card-body text-center">
+                                @if (!string.IsNullOrEmpty(Model.AadhaarDocumentPath))
+                                {
+                                    <img src="@Model.AadhaarDocumentPath" class="img-fluid rounded mb-2" style="max-height: 250px;" />
+                                    <p><a href="@Model.AadhaarDocumentPath" target="_blank">View Aadhaar</a></p>
+                                }
+                                else
+                                {
+                                    <p class="text-muted">Not uploaded.</p>
+                                }
+                                <input type="file" name="AadhaarDoc" class="form-control mt-2" accept=".jpg,.jpeg,.png,.pdf" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-header bg-light">PAN Card Document</div>
+                            <div class="card-body text-center">
+                                @if (!string.IsNullOrEmpty(Model.PanCardDocumentPath))
+                                {
+                                    <img src="@Model.PanCardDocumentPath" class="img-fluid rounded mb-2" style="max-height: 250px;" />
+                                    <p><a href="@Model.PanCardDocumentPath" target="_blank">View PAN</a></p>
+                                }
+                                else
+                                {
+                                    <p class="text-muted">Not uploaded.</p>
+                                }
+                                <input type="file" name="PanCardDoc" class="form-control mt-2" accept=".jpg,.jpeg,.png,.pdf" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="AccountHolderName" class="form-label"></label>
+                        <input asp-for="AccountHolderName" class="form-control" />
+                        <span asp-validation-for="AccountHolderName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="BankName" class="form-label"></label>
+                        <input asp-for="BankName" class="form-control" />
+                        <span asp-validation-for="BankName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label asp-for="AccountNumber" class="form-label"></label>
+                        <input asp-for="AccountNumber" class="form-control" />
+                        <span asp-validation-for="AccountNumber" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="IFSC" class="form-label"></label>
+                        <input asp-for="IFSC" class="form-control" />
+                        <span asp-validation-for="IFSC" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success btn-lg px-4">Update KYC</button>
+                    <a href="@Url.Action("KycStatus", "ServiceProvider")" class="btn btn-secondary btn-lg ms-2">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('#successAlert, #errorAlert');
+            alerts.forEach(alert => {
+                alert.style.transition = 'opacity 1s ease';
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 1000);
+            });
+        }, 5000);
+    </script>
+}

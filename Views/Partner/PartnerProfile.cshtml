@@ -1,0 +1,140 @@
+﻿@model Sewa360.Areas.Admin.Models.Partner
+
+@{
+    ViewBag.Title = "Partner Profile";
+    Layout = "~/Views/Shared/_layoutpartner.cshtml";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<div class="page-header">
+    <h3 class="page-title">Profile</h3>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Profile</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="row">
+    <!-- LEFT COLUMN -->
+    <div class="col-lg-4 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body text-center">
+                <img src="~/template2/images/faces/face12.jpg" alt="profile" class="img-lg rounded-circle mb-3" />
+                <h4 class="mb-1">@($"{Model.First_Name ?? ""} {Model.Last_Name ?? ""}".Trim())</h4>
+                <p class="text-muted">@Model.Manager_Code</p>
+                <p class="mb-3">Bureau Oberhaeuser is a design bureau focused on Information and Interface Design.</p>
+
+                <div class="d-flex justify-content-center gap-2 mb-4">
+                    <button class="btn btn-success btn-sm me-2">Hire Me</button>
+                    <hr />
+                    <button class="btn btn-outline-success btn-sm">Follow</button>
+                </div>
+
+                <div class="pt-2 border-top text-start">
+                    <p class="d-flex align-items-center mb-3">
+                        <i class="fa fa-circle text-success" style="margin-right: 10px;"></i>
+                        <span class="fw-semibold me-2" style="margin-right: 20px;">Status</span>
+                        <span style="margin-right: 30px;">:</span>
+                        <span class="text-success">
+                            @(Model.IsActive ? "Active" : "Inactive")
+                        </span>
+                    </p>
+
+
+                    <p class="d-flex align-items-center mb-3">
+                        <i class="fa fa-phone text-secondary" style="margin-right: 10px;"></i>
+                        <span class="fw-semibold" style="margin-right: 20px;">Phone</span>
+                        <span style="margin-right: 30px;">:</span>
+                        <span class="text-muted">@Model.Partner_Phone</span>
+                    </p>
+                    <p class="d-flex align-items-center mb-3">
+                        <i class="fa fa-envelope text-secondary" style="margin-right: 10px;"></i>
+                        <span class="fw-semibold" style="margin-right: 30px;">Mail</span>
+                        <span style="margin-right: 30px;">:</span>
+                        <span class="text-muted">@Model.Partner_Email</span>
+                    </p>
+                    <p class="d-flex align-items-center mb-3">
+                        <i class="fab fa-facebook text-primary" style="margin-right: 10px;"></i>
+                        <span class="fw-semibold" style="margin-right: 10px;">Facebook</span>
+                        <span style="margin-right: 30px;">:</span>
+                        <span><a href="#">David Grey</a></span>
+                    </p>
+                    <p class="d-flex align-items-center">
+                        <i class="fab fa-twitter text-info" style="margin-right: 10px;"></i>
+                        <span class="fw-semibold" style="margin-right: 23px;">Twitter</span>
+                        <span style="margin-right: 30px;">:</span>
+                        <span><a href="#">@@davidgrey</a></span>
+                    </p>
+                </div>
+
+                <button class="btn btn-primary btn-block mt-4">Preview</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="col-lg-8 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-3">
+                    <div>
+                        <h4 class="mb-0">@($"{Model.First_Name ?? ""} {Model.Last_Name ?? ""}".Trim())</h4>
+                        <p class="text-muted mb-1">@Model.Partner_City</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-secondary btn-icon me-2">
+                            <i class="far fa-envelope me-1"></i>
+                        </button>
+                        <button class="btn btn-primary">Request</button>
+                    </div>
+                </div>
+
+                <ul class="nav nav-tabs mb-4">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="fa fa-user" style="margin-right: 8px;"></i>Info</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-file" style="margin-right: 8px;"></i>Feed</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fa fa-calendar" style="margin-right: 8px;"></i>Agenda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="far fa-file-word" style="margin-right: 8px;"></i>Resume</a>
+                    </li>
+                </ul>
+
+                <div class="profile-feed">
+                    <div class="d-flex mb-4">
+                        <img src="~/template2/images/faces/face13.jpg" alt="profile" class="img-sm rounded-circle me-3" />
+                        <div>
+                            <h6 class="mb-1">Mason Beck <small class="text-muted ms-2"><i class="far fa-clock me-1"></i>10 hours ago</small></h6>
+                            <p>There is no better advertisement campaign that is low cost and also successful at the same time.</p>
+                            <p class="small text-muted">
+                                <i class="fa fa-star me-1"></i>4
+                                <span class="ms-3"><i class="fa fa-comment me-1"></i>11</span>
+                                <span class="ms-3"><i class="fa fa-reply me-1"></i></span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex mb-4">
+                        <img src="~/template2/images/faces/face16.jpg" alt="profile" class="img-sm rounded-circle me-3" />
+                        <div>
+                            <h6 class="mb-1">Willie Stanley <small class="text-muted ms-2"><i class="far fa-clock me-1"></i>10 hours ago</small></h6>
+                            <img src="~/template2/images/samples/1280x768/12.jpg" alt="sample" class="rounded img-fluid mb-2" />
+                            <p class="small text-muted">
+                                <i class="fa fa-star me-1"></i>4
+                                <span class="ms-3"><i class="fa fa-comment me-1"></i>11</span>
+                                <span class="ms-3"><i class="fa fa-reply me-1"></i></span>
+                            </p>
+                        </div>
+                    </div>
+                </div> <!-- profile-feed -->
+
+            </div>
+        </div>
+    </div>
+</div>

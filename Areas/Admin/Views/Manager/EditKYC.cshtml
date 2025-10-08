@@ -1,0 +1,168 @@
+﻿@model Sewa360.Models.ManagerKYC
+
+@{
+    ViewBag.Title = "Edit Manager KYC";
+    Layout = "~/Areas/Admin/Views/Shared/_dashboardmanagerlayout.cshtml";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success" id="successAlert">
+        @TempData["Success"]
+    </div>
+    <script>
+        setTimeout(() => {
+            const alert = document.getElementById('successAlert');
+            if (alert) {
+                alert.style.transition = "opacity 0.5s ease";
+                alert.style.opacity = "0";
+                setTimeout(() => alert.remove(), 500);
+            }
+        }, 5000);
+    </script>
+}
+
+<div class="container mt-5">
+    <div class="card shadow rounded-4">
+        <div class="card-header bg-warning text-white text-center">
+            <h4>Edit Manager KYC</h4>
+        </div>
+        <div class="card-body p-4">
+            @using (Html.BeginForm("EditKYC", "Manager", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.HiddenFor(m => m.Manager_Id)
+                @Html.HiddenFor(m => m.AadhaarDocumentPath)
+                @Html.HiddenFor(m => m.PanCardDocumentPath)
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.AadhaarNumber, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.AadhaarNumber, new { @class = "form-control", placeholder = "Enter Aadhaar number" })
+                        @Html.ValidationMessageFor(m => m.AadhaarNumber, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.PanNumber, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.PanNumber, new { @class = "form-control", placeholder = "Enter PAN number" })
+                        @Html.ValidationMessageFor(m => m.PanNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Replace Aadhaar Document</label>
+                        <input type="file" name="AadhaarDoc" accept=".jpg,.jpeg,.png,.pdf" class="form-control" onchange="previewFile(this, 'aadhaarPreview')" />
+                        <div id="aadhaarPreview" class="mt-2 text-center"></div>
+                        @if (!string.IsNullOrEmpty(Model.AadhaarDocumentPath))
+                        {
+                            <div class="mt-2 text-center">
+                                <strong>Previously Uploaded Aadhaar:</strong><br />
+                                @if (Model.AadhaarDocumentPath.EndsWith(".pdf"))
+                                {
+                                    <a href="@Model.AadhaarDocumentPath" class="btn btn-outline-primary" target="_blank">View Aadhaar PDF</a>
+                                }
+                                else
+                                {
+                                    <img src="@Model.AadhaarDocumentPath" class="img-thumbnail" style="max-height: 200px;" />
+                                }
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Replace PAN Document</label>
+                        <input type="file" name="PanCardDoc" accept=".jpg,.jpeg,.png,.pdf" class="form-control" onchange="previewFile(this, 'panPreview')" />
+                        <div id="panPreview" class="mt-2 text-center"></div>
+                        @if (!string.IsNullOrEmpty(Model.PanCardDocumentPath))
+                        {
+                            <div class="mt-2 text-center">
+                                <strong>Previously Uploaded PAN:</strong><br />
+                                @if (Model.PanCardDocumentPath.EndsWith(".pdf"))
+                                {
+                                    <a href="@Model.PanCardDocumentPath" class="btn btn-outline-primary" target="_blank">View PAN PDF</a>
+                                }
+                                else
+                                {
+                                    <img src="@Model.PanCardDocumentPath" class="img-thumbnail" style="max-height: 200px;" />
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.AccountHolderName, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.AccountHolderName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.AccountHolderName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.BankName, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.BankName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.BankName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.AccountNumber, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.AccountNumber, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.IFSC, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.IFSC, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.IFSC, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-warning btn-lg px-4">
+                        <i class="bi bi-pencil-square me-1"></i> Update KYC
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        function previewFile(input, previewId) {
+            const file = input.files[0];
+            const preview = document.getElementById(previewId);
+            preview.innerHTML = "";
+
+            if (file) {
+                const fileType = file.type;
+                const reader = new FileReader();
+
+                if (fileType.includes("image")) {
+                    reader.onload = function (e) {
+                        const img = document.createElement("img");
+                        img.src = e.target.result;
+                        img.className = "img-thumbnail";
+                        img.style.maxHeight = "200px";
+                        preview.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                }
+                else if (fileType === "application/pdf") {
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(file);
+                    link.target = "_blank";
+                    link.className = "btn btn-outline-primary";
+                    link.innerText = "View PDF";
+                    preview.appendChild(link);
+                }
+                else {
+                    const msg = document.createElement("p");
+                    msg.className = "text-danger";
+                    msg.innerText = "Unsupported file type.";
+                    preview.appendChild(msg);
+                }
+            }
+        }
+    </script>
+}

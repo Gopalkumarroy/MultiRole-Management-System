@@ -1,0 +1,117 @@
+﻿@model IEnumerable<Sewa360.Models.Branch>
+
+@{
+    //Layout = "~/Views/Shared/_layoutcompany.cshtml"; // Change layout if needed
+    Layout = "~/Areas/Admin/Views/Shared/_dashboardlayout.cshtml";
+    ViewBag.Title = "Branch List";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert" id="successMessage">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+    const msg = document.getElementById("successMessage");
+    if (msg) {
+    setTimeout(() => {
+    msg.style.transition = "opacity 0.5s ease";
+    msg.style.opacity = "0";
+    setTimeout(() => msg.remove(), 500);
+    }, 2000);
+    }
+    });
+</script>
+
+<h2 class="text-center mb-4 text-primary">🏢 Branch List</h2>
+
+<div class="container">
+    <div class="d-flex justify-content-end mb-3">
+        @Html.ActionLink("➕ Add New Branch", "CreateBranch", "Branch", null, new { @class = "btn btn-outline-primary fw-semibold shadow-sm" })
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered shadow rounded-3 overflow-hidden" id="BranchTableData">
+            <thead class="table-primary text-center align-middle">
+                <tr>
+                    <th>S.No.</th>
+                    <th>Branch Code</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>Joining Date & Time</th>
+                    <th>Company Id</th>
+                    <th>Is Active</th>
+                    <th style="width: 180px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="align-middle text-center">
+
+                @{
+                    int i = 1;
+                }
+
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var branch in Model)
+                    {
+                        <tr>
+                            <td class="text-center">@i</td>
+                            <td>@branch.Branch_Code</td>
+                            <td>@branch.Branch_Name</td>
+                            <td>@branch.Branch_Phone</td>
+                            <td>@branch.Branch_Email</td>
+                            <td>@branch.Department</td>
+                            <td>@branch.CreatedOn</td>
+                            <td>@branch.Company_Id</td>
+                            <td class="text-center">
+                                @if (branch.IsActive)
+                                {
+                                    <span class="badge bg-success px-3 py-2 rounded-pill">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger px-3 py-2 rounded-pill">Inactive</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                @Html.ActionLink("View", "BranchDetails", new { id = branch.Branch_Id }, new { @class = "btn btn-sm btn-info text-white me-1" })
+                                @Html.ActionLink("Edit", "EditBranch", new { id = branch.Branch_Id }, new { @class = "btn btn-sm btn-warning text-white me-1" })
+                                @Html.ActionLink("Delete", "Delete", new { id = branch.Branch_Id }, new { @class = "btn btn-sm btn-danger", onclick = "return confirm('Are you sure you want to delete this branch?');" })
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="9" class="text-center text-muted py-4">
+                            <i class="fa fa-code-branch fa-2x mb-2"></i><br />
+                            No branches found.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/datatable/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#BranchTableData').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                pageLength: 10
+            });
+        });
+    </script>
+}

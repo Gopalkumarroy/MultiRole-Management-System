@@ -1,0 +1,137 @@
+﻿@model List<Sewa360.Models.SericeProvider>
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_dashboardlayout.cshtml";
+    ViewBag.Title = "Service Provider List";
+  
+}
+<style>
+    .table i {
+        font-size: 1rem;
+        vertical-align: middle;
+    }
+</style>
+
+@* <style>
+    .table .btn {
+        min-width: 80px;
+        font-size: 14px;
+    }
+</style>
+ *@
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Service Provider List</h2>
+
+    <table id="providerTable" class="display table table-bordered table-striped table-hover">
+        <thead class="thead-dark">
+            <tr class="text-center">
+                <th>S.No</th>
+                <th>Service-Provider Code</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Password</th>
+               @*  <th>Company</th> *@
+
+                <th>Created On</th>
+                <th>Active</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int serial = 1;
+                foreach (var sp in Model)
+                {
+                    <tr class="text-center">
+                        <td class="text-center">@serial</td>
+                        <td>@sp.Manager_Code</td>
+                        <td>@($"{sp.First_Name} {sp.Last_Name}")</td>
+
+                        <td>@sp.ServiceProv_Email</td>
+                        <td>@sp.Service_Phone</td>
+                        <td>@sp.ServiceProv_Password</td>
+                        @* <td>@sp.Company_Name</td> *@
+                        <td>@sp.CreatedOn?.ToString("dd-MMM-yyyy hh:mm tt")</td>
+                        <td>
+                            @if (sp.IsActive)
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactive</span>
+                            }
+                        </td>
+
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center gap-1">
+                                <a href="@Url.Action("View", "ServiceProvider", new { area = "Admin", id = sp.ServiceProvider_Id })"
+                                   class="btn btn-info btn-sm"
+                                   data-bs-toggle="tooltip" data-bs-placement="top" title="View Details">
+                                    <i class="bi bi-eye text-white"></i>
+                                </a>
+
+                                <a href="@Url.Action("Edit", "ServiceProvider", new { area = "Admin", id = sp.ServiceProvider_Id })"
+                                   class="btn btn-warning btn-sm"
+                                   data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Service Provider">
+                                    <i class="bi bi-pencil-square text-white"></i>
+                                </a>
+
+                                <a href="@Url.Action("Delete", "ServiceProvider", new { area = "Admin", id = sp.ServiceProvider_Id })"
+                                   class="btn btn-danger btn-sm"
+                                   data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Service Provider"
+                                   onclick="return confirm('Are you sure you want to delete this record?');">
+                                    <i class="bi bi-trash text-white"></i>
+                                </a>
+                            </div>
+                        </td>
+
+
+
+
+
+                    </tr>
+                    serial++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+        <script>
+            $(document).ready(function () {
+                $('#providerTable').DataTable({
+                    "pageLength": 10,
+                    "lengthChange": true,
+                    "searching": true,
+                    "ordering": true
+                });
+            });
+        </script>
+
+    <script>
+        $(document).ready(function () {
+            // Enable Bootstrap tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+
+            $('#providerTable').DataTable({
+                "pageLength": 10,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true
+            });
+        });
+    </script>
+}

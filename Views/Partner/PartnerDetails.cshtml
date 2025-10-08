@@ -1,0 +1,37 @@
+﻿@model Sewa360.Areas.Admin.Models.Partner
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_dashboardlayout.cshtml";
+    ViewData["Title"] = "Partner Details";
+}
+
+<h2 class="mb-4 text-center">Partner Details</h2>
+
+<div class="card shadow-sm p-4">
+    <dl class="row">
+        <dt class="col-sm-3">Partner Code</dt>
+        <dd class="col-sm-9">@Model.Manager_Code</dd>
+
+        <dt class="col-sm-3">Partner Name</dt>
+        <dd class="col-sm-9">@($"{Model.First_Name} {Model.Last_Name}")</dd>
+
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">@Model.Partner_Email</dd>
+
+        <dt class="col-sm-3">Phone</dt>
+        <dd class="col-sm-9">@Model.Partner_Phone</dd>
+
+        <dt class="col-sm-3">Password</dt>
+        <dd class="col-sm-9">@Model.Partner_Password</dd>
+
+        <dt class="col-sm-3">Joining Date</dt>
+        <dd class="col-sm-9">@Model.CreatedOn?.ToString("dd-MM-yyyy hh:mm tt")</dd>
+
+        <dt class="col-sm-3">Is Active</dt>
+        <dd class="col-sm-9">@Model.IsActive</dd>
+    </dl>
+
+    <div class="text-center mt-4">
+        <a asp-action="PartnerEdit" asp-route-id="@Model.Partner_Id" class="btn btn-sm btn-warning mx-2">Edit</a>
+        <a asp-action="PartnerListPage" class="btn btn-sm btn-secondary mx-2">Back to List</a>
+    </div>
+</div>

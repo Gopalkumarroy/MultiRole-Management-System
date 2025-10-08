@@ -1,0 +1,131 @@
+﻿@model IEnumerable<Sewa360.Models.Company>
+
+@{
+    //Layout = "~/Views/Shared/_layoutcompany.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_dashboardlayout.cshtml";
+    ViewBag.Title = "Company List";
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="successMessage">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<script>
+    window.addEventListener("DOMContentLoaded", () => {
+    const msg = document.getElementById("successMessage");
+    if (msg) {
+    setTimeout(() => {
+    msg.style.transition = "opacity 0.5s ease";
+    msg.style.opacity = "0";
+    setTimeout(() => msg.remove(), 500);
+    }, 2000);
+    }
+    });
+</script>
+
+
+
+<h2 class="text-center mb-4 text-primary">📋 Company List</h2>
+
+<div class="container">
+    <div class="d-flex justify-content-end mb-3">
+        @Html.ActionLink("➕ Add New Company", "CreateCompany", "Company", null, new { @class = "btn btn-outline-primary fw-semibold shadow-sm" })
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered shadow rounded-3 overflow-hidden" id="ServiceTableData">
+            <thead class="table-primary text-center align-middle">
+                <tr>
+                    <th>S.No.</th>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Country</th>
+                    <th>State</th>
+                    <th>City</th>
+                    @*  <th>RegistrationDate</th> *@
+                    <th>Is Active</th>
+                    <th style="width: 180px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="align-middle text-center align-middle ">
+
+                @{
+                    int i = 1;
+                }
+
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var company in Model)
+                    {
+                        <tr>
+                            <td class="text-center">@i</td>
+                            <td>@company.Company_Code</td>
+                            <td>@company.Company_Name</td>
+                            <td>@company.Company_Email</td>
+                            <td>@company.Company_Phone</td>
+                            <td>@company.Company_Country</td>
+                            <td>@company.Company_State</td>
+                            <td>@company.Company_City</td>
+                            @* <td>@company.IsActive</td> *@
+
+                            @* <td>
+                                @company.Company_RegistrationDate?.ToString("yyyy-MM-dd HH:mm:ss")
+                            </td> *@
+
+                            <td class="text-center">
+                                @if (company.IsActive)
+                                {
+                                    <span class="badge bg-success px-3 py-2 rounded-pill">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger px-3 py-2 rounded-pill">Inactive</span>
+                                }
+
+                            </td> 
+
+                            <td class="text-center">
+                                @Html.ActionLink("View", "CompanyDetails", new { id = company.Company_Id }, new { @class = "btn btn-sm btn-info text-white me-1" })
+                                @Html.ActionLink("Edit", "CompanyEdit", new { id = company.Company_Id }, new { @class = "btn btn-sm btn-warning text-white me-1" })
+                                @Html.ActionLink("Delete", "Delete", new { id = company.Company_Id }, new { @class = "btn btn-sm btn-danger", onclick = "return confirm('Are you sure you want to delete this company?');" })
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8" class="text-center text-muted py-4">
+                            <i class="fa fa-building fa-2x mb-2"></i><br />
+                            No companies found.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="~/datatable/datatables.min.js"></script>
+<script src="~/datatable/datatables.js"></script>
+
+@section scripts {
+    <script src="~/datatable/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#ServiceTableData').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                pageLength: 10
+            });
+        });
+    </script>
+
+
+}

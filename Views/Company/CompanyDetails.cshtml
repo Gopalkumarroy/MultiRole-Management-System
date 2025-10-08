@@ -1,0 +1,63 @@
+﻿@model Sewa360.Models.Company
+@{
+   // Layout = "~/Views/Shared/_layoutcompany.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_dashboardlayout.cshtml";
+    ViewData["Title"] = "Company Details";
+}
+
+<h2 class="mb-4 text-center">Company Details</h2>
+
+<div class="card shadow-sm p-4">
+    <dl class="row">
+        <dt class="col-sm-3">Company Code</dt>
+        <dd class="col-sm-9">@Model.Company_Code</dd>
+
+        <dt class="col-sm-3">Company Name</dt>
+        <dd class="col-sm-9">@Model.Company_Name</dd>
+
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">@Model.Company_Email</dd>
+
+        <dt class="col-sm-3">Phone</dt>
+        <dd class="col-sm-9">@Model.Company_Phone</dd>
+
+        <dt class="col-sm-3">Country</dt>
+        <dd class="col-sm-9">@Model.Company_Country</dd>
+
+        <dt class="col-sm-3">State</dt>
+        <dd class="col-sm-9">@Model.Company_State</dd>
+
+        <dt class="col-sm-3">City</dt>
+        <dd class="col-sm-9">@Model.Company_City</dd>
+
+        <dt class="col-sm-3">Address</dt>
+        <dd class="col-sm-9">@Model.Company_Address</dd>
+
+        <dt class="col-sm-3">Zip Code</dt>
+        <dd class="col-sm-9">@Model.Company_ZipCode</dd>
+
+        <dt class="col-sm-3">Website</dt>
+        <dd class="col-sm-9">@Model.Company_Website</dd>
+
+        <dt class="col-sm-3">Tax ID</dt>
+        <dd class="col-sm-9">@Model.Company_TaxId</dd>
+
+        <dt class="col-sm-3">Industry Type</dt>
+        <dd class="col-sm-9">@Model.Company_IndustryType</dd>
+
+        <dt class="col-sm-3">Description</dt>
+        <dd class="col-sm-9">@Model.Company_Description</dd>
+
+        <dt class="col-sm-3">Registration Date</dt>
+        <dd class="col-sm-9">@Model.Company_RegistrationDate?.ToString("yyyy-MM-dd")</dd>
+
+        <dt class="col-sm-3">Is Active</dt>
+        <dd class="col-sm-9">@Model.IsActive ? "Yes" : "No"</dd>
+    </dl>
+
+    <div class="text-center mt-4">
+        <a asp-action="CompanyEdit" asp-route-id="@Model.Company_Id" class="btn btn-sm btn-warning mx-2">Edit</a>
+        <a asp-action="CompanyListPage" class="btn btn-sm btn-secondary mx-2">Back to List</a>
+    </div>
+
+</div>

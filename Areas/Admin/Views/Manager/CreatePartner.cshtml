@@ -1,0 +1,274 @@
+﻿@model List<Sewa360.Areas.Admin.Models.Partner>
+
+@{
+    //Layout = "~/Areas/Admin/views/shared/_dashboardmanagerlayout.cshtml";
+
+    Layout = "~/Areas/Admin/Views/Shared/_dashboardlayout.cshtml";
+}
+
+<!-- Create Partner Button -->
+<button type="button" class="btn btn-outline-primary mb-3" data-bs-toggle="modal" data-bs-target="#createPartnerModal">
+    + Create Partner
+</button>
+
+<!-- Partner Table -->
+<div class="table-responsive">
+    <table id="dataTableData" class="table table-bordered table-striped">
+        <thead class="table-primary text-center">
+            <tr>
+                <th>S.No</th>
+                <th>👤 Partner Name</th>
+                <th>🔢 Partner Code</th>
+                <th>📍 City</th>
+                <th>📞 Contact</th>
+                <th>📧 Email</th>
+                <th>🔒 Password</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Count > 0)
+            {
+                int sn = 1;
+                foreach (var partner in Model)
+                {
+                    <tr class="text-center">
+                        <td>@sn</td>
+                        <td>@partner.Partner_Name</td>
+                        <td>@partner.Partner_Code</td>
+                        <td>@partner.Partner_City</td>
+                        <td>@partner.Partner_Phone</td>
+                        <td>@partner.Partner_Email</td>
+                        <td>@partner.Partner_Password</td>
+                        <td>
+                            @if (partner.IsActive)
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactive</span>
+                            }
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-outline-primary me-2"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editPartnerModal"
+                                    data-id="@partner.Partner_Id"
+                                    data-name="@partner.Partner_Name"
+                                    data-code="@partner.Partner_Code"
+                                    data-city="@partner.Partner_City"
+                                    data-contact="@partner.Partner_Phone"
+                                    data-email="@partner.Partner_Email"
+                                    data-password="@partner.Partner_Password"
+                                    data-status="@partner.IsActive">
+                                Edit
+                            </button>
+
+                            @* <button type="button" class="btn btn-sm btn-danger"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deletePartnerModal"
+                                    data-id="@partner.Partner_Id">
+                                Delete
+                            </button> *@
+                            <button type="button" class="btn btn-danger btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deletePartnerModal"
+                                    data-id="@partner.Partner_Id">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    sn++;
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="9" class="text-center">No partners found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination Controls -->
+<nav>
+    <ul id="pagination" class="pagination justify-content-center flex-wrap"></ul>
+</nav>
+
+<!-- Create Partner Modal -->
+<div class="modal fade" id="createPartnerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 shadow">
+            <form asp-action="CreatePartner" asp-controller="Manager" method="post">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">Create New Partner</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Partner Name</label>
+                                <input name="Partner_Name" class="form-control" required />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Partner Code</label>
+                                <input name="Partner_Code" class="form-control" required />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">City</label>
+                                <input name="Partner_City" class="form-control" required />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Contact</label>
+                                <input name="Partner_Phone" class="form-control" required />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <input name="Partner_Email" type="email" class="form-control" required />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Password</label>
+                                <input name="Partner_Password" type="password" class="form-control" required />
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label d-block mb-2">Status</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="IsActive" value="true" checked />
+                                    <label class="form-check-label">Active</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="IsActive" value="false" />
+                                    <label class="form-check-label">Inactive</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success px-4">Create</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* <!-- Delete Partner Modal -->
+<div class="modal fade" id="deletePartnerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4">
+            <form asp-action="Delete" asp-controller="Manager" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this partner?
+                    <input type="hidden" name="id" id="deletePartnerId" />
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> *@
+
+<div class="modal fade" id="deletePartnerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this partner?
+                <input type="hidden" id="deletePartnerId" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Scripts -->
+@section Scripts {
+   
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/datatable/datatables.min.js"></script>
+    <script>
+
+         $(document).ready(function () {
+            $('#dataTableData').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                pageLength: 10
+            });
+        });
+
+        //        var deleteModal = document.getElementById('deletePartnerModal');
+        // deleteModal.addEventListener('show.bs.modal', function (event) {
+        //     var button = event.relatedTarget;
+        //     var partnerId = button.getAttribute('data-id');
+        //     document.getElementById('deletePartnerId').value = partnerId;
+        // });
+
+    </script>
+}
+<script>
+        let  deletePartnerId= 0;
+
+    // Set ID when modal is shown
+    const deleteModal = document.getElementById('deletePartnerModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        deletePartnerId = button.getAttribute('data-id');
+        document.getElementById('deletePartnerId').value = deletePartnerId;
+    });
+
+    // Handle Delete Click
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+        $.ajax({
+            
+            url: '/Admin/Manager/Delete', // Change to your actual route
+            type: 'POST',
+            data: { id: deletePartnerId },
+            success: function (result) {
+                
+                // Hide modal
+                $('#deletePartnerModal').modal('hide');
+
+                // Optionally: remove row from table or reload data
+                $('#partnerRow_' + deletePartnerId).remove(); // If you use IDs for rows
+                location.reload();
+            },
+            error: function () {
+                alert("An error occurred while deleting the partner.");
+            }
+        });
+    });
+</script>
+
+   
+

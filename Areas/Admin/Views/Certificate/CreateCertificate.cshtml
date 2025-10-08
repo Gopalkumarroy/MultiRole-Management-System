@@ -1,0 +1,46 @@
+﻿@model Sewa360.Areas.Admin.Models.Certificates
+
+@{
+    Layout = "~/Areas/Admin/views/shared/_dashboardlayout.cshtml";
+}
+
+<h2>Create Certificate</h2>
+<form asp-action="CreateCertificate" method="post">
+
+    <div class="form-group">
+        <label>Student Name</label>
+        <input type="text" name="FullName" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="Email" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Roll No</label>
+        <input type="text" name="RollNo" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Course</label>
+        <input type="text" name="Course" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Company</label>
+        <input type="text" name="CompanyName" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Start Date</label>
+        <input type="date" name="StartDate" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>End Date</label>
+        <input type="date" name="EndDate" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>

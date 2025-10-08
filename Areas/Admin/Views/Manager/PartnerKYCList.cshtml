@@ -1,0 +1,56 @@
+﻿@model List<Sewa360.Models.PartnerKYCEntry>
+@{
+    ViewBag.Title = "Partner KYC List";
+    Layout = "~/Areas/Admin/Views/Shared/_dashboardmanagerlayout.cshtml";
+}
+
+<h2 class="mb-4">Partner KYC Status</h2>
+
+<table id="PartnerKYCTable" class="table table-bordered table-hover text-center">
+    <thead class="table-dark text-center">
+        <tr>
+            <th class="text-center">S.No</th>
+            <th class="text-center">Partner Name</th>
+            <th class="text-center">Contact</th>
+            <th class="text-center">KYC Status</th>
+            
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                <td class="text-center">@(i + 1)</td>
+                <td>@Model[i].PartnerName</td>
+                <td class="text-center">@Model[i].Partner_Phone</td>
+                <td>
+                    @{
+                        var status = Model[i].KycStatus;
+                        string badgeClass = status switch
+                        {
+                            "Approved" => "success",
+                            "Pending" => "warning",
+                            "Rejected" => "danger",
+                            "Not Applied" => "secondary",
+                            _ => "light"
+                        };
+                    }
+                    <span class="badge bg-@badgeClass">@status</span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+<!-- DataTables CSS -->
+<link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+
+<script>
+    $(document).ready(function () {
+        $('#PartnerKYCTable').DataTable({
+            responsive: true
+        });
+    });
+</script>

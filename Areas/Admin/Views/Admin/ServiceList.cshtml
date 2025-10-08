@@ -1,0 +1,103 @@
+﻿@model List<Sewa360.Areas.Admin.Models.ServiceViewModel>
+
+@{
+    //Layout = "~/Areas/Admin/Views/Shared/_dashboardlayout.cshtml";
+    Layout = "~/views/shared/_layoutpartner.cshtml";
+}
+
+<style>
+    .menu-wrapper {
+        position: relative;
+        display: inline-block;
+        margin: 20px;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .main-dropdown-button {
+        background-color: #0077b6;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .main-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #f1faff;
+        border: 1px solid #caf0f8;
+        border-radius: 6px;
+        min-width: 250px;
+        z-index: 100;
+    }
+
+    .menu-wrapper:hover .main-dropdown {
+        display: block;
+    }
+
+    .main-category {
+        position: relative;
+        padding: 10px 15px;
+        cursor: pointer;
+        border-bottom: 1px solid #e0f0f8;
+        white-space: nowrap;
+    }
+
+        .main-category:hover {
+            background-color: #e0f7ff;
+        }
+
+    .sub-category-list {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 100%;
+        background-color: #ffffff;
+        min-width: 220px;
+        border: 1px solid #caf0f8;
+        border-radius: 6px;
+        z-index: 101;
+    }
+
+    .main-category:hover .sub-category-list {
+        display: block;
+    }
+
+    .sub-category-item {
+        padding: 10px 15px;
+        font-size: 14px;
+        color: #023047;
+        border-bottom: 1px solid #eee;
+    }
+
+        .sub-category-item:hover {
+            background-color: #d9f3ff;
+        }
+
+        .main-category:last-child,
+        .sub-category-item:last-child {
+            border-bottom: none;
+        }
+</style>
+
+<div class="menu-wrapper">
+    <div class="main-dropdown-button">▼ E-Courses</div>
+    <div class="main-dropdown">
+        @foreach (var service in Model)
+        {
+            <div class="main-category">
+                @service.Name
+                <div class="sub-category-list">
+                    @foreach (var sub in service.SubServices)
+                    {
+                        <div class="sub-category-item">• @sub.Name</div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

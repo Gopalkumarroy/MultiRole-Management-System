@@ -1,0 +1,127 @@
+﻿@model Sewa360.Models.PartnerKYC
+
+@{
+    ViewBag.Title = "KYC Upload";
+    Layout = "~/Views/Shared/_layoutpartner.cshtml";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success" id="successAlert">
+        @TempData["Success"]
+    </div>
+
+    <script>
+        // Hide the success message after 5 seconds
+        setTimeout(function () {
+            var alert = document.getElementById('successAlert');
+            if (alert) {
+                alert.style.transition = "opacity 0.5s ease";
+                alert.style.opacity = "0";
+                setTimeout(function () {
+                    alert.remove();
+                }, 500);
+            }
+        }, 5000);
+    </script>
+}
+
+
+
+<div class="container mt-5">
+    <div class="card shadow rounded-4">
+        <div class="card-header bg-primary text-white text-center">
+            <h4>KYC Submission</h4>
+        </div>
+        <div class="card-body p-4">
+            <form asp-action="PartnerKYC" enctype="multipart/form-data" method="post">
+                <input type="hidden" asp-for="Partner_Id" />
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="AadhaarNumber" class="form-label"></label>
+                        <input asp-for="AadhaarNumber" class="form-control" placeholder="Enter Aadhaar number" />
+                        <span asp-validation-for="AadhaarNumber" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="PanNumber" class="form-label"></label>
+                        <input asp-for="PanNumber" class="form-control" placeholder="Enter PAN number" />
+                        <span asp-validation-for="PanNumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Upload Aadhaar Document</label>
+                        <input type="file" name="AadhaarDoc" accept=".jpg,.jpeg,.png,.pdf" class="form-control" required onchange="previewImage(this, 'aadhaarPreview')" />
+                        <img id="aadhaarPreview" src="#" alt="Aadhaar Preview" class="img-fluid mt-2 rounded border" style="display:none; max-height: 200px;" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Upload PAN Card Document</label>
+                        <input type="file" name="PanCardDoc" accept=".jpg,.jpeg,.png,.pdf" class="form-control" required onchange="previewImage(this, 'panPreview')" />
+                        <img id="panPreview" src="#" alt="PAN Preview" class="img-fluid mt-2 rounded border" style="display:none; max-height: 200px;" />
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="AccountHolderName" class="form-label"></label>
+                        <input asp-for="AccountHolderName" class="form-control" />
+                        <span asp-validation-for="AccountHolderName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="BankName" class="form-label"></label>
+                        <input asp-for="BankName" class="form-control" />
+                        <span asp-validation-for="BankName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="AccountNumber" class="form-label"></label>
+                        <input asp-for="AccountNumber" class="form-control" />
+                        <span asp-validation-for="AccountNumber" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="IFSC" class="form-label"></label>
+                        <input asp-for="IFSC" class="form-control" />
+                        <span asp-validation-for="IFSC" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success btn-lg px-4">Submit KYC</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@4.0.0/dist/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        function previewImage(input, previewId) {
+            const file = input.files[0];
+            const preview = document.getElementById(previewId);
+
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+                preview.src = '';
+            }
+        }
+    </script>
+}

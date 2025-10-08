@@ -1,0 +1,38 @@
+﻿@model List<Sewa360.Areas.Admin.Models.CertificateModel>
+
+@{
+    Layout = "~/Areas/Admin/views/shared/_dashboardlayout.cshtml";
+}
+
+
+<h2>Certificates in Batch</h2>
+
+<a asp-action="DownloadAll" asp-route-batchId="@ViewBag.BatchId" class="btn btn-success">Download All (ZIP)</a>
+
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>Certificate No</th>
+            <th>Student</th>
+            <th>Roll No</th>
+            <th>Course</th>
+            <th>Date</th>
+            <th>Download</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.CertificateNo</td>
+                <td>@c.StudentName</td>
+                <td>@c.RollNo</td>
+                <td>@c.Course</td>
+                <td>@c.GeneratedAt.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Download" asp-route-id="@c.Certificate_Id" class="btn btn-primary btn-sm">Download</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

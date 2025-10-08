@@ -1,0 +1,217 @@
+﻿@model Sewa360.Models.Company
+
+@{
+   // Layout = "~/Views/Shared/_layoutcompany.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_dashboardlayout.cshtml";
+    ViewBag.Title = "Edit Company";
+}
+
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<h2 class="text-center text-primary mb-4 fw-bold">Add New Company</h2>
+
+<div class="container">
+    @using (Html.BeginForm("CompanyEdit", "Company", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+    {
+        @Html.HiddenFor(model => model.Company_Id)
+
+        @Html.AntiForgeryToken()
+        <div class="card shadow-lg rounded-4 p-4 border border-primary">
+            <div class="row g-4">
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-secondary" for="Company_Code">Company Code</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-primary text-white"><i class="fa fa-code"></i></span>
+                        @Html.TextBoxFor(m => m.Company_Code, new { @class = "form-control", placeholder = "Enter Company Code" })
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Company_Code, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-secondary" for="Company_Name">Company Name</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-primary text-white"><i class="fa fa-building"></i></span>
+                        @Html.TextBoxFor(m => m.Company_Name, new { @class = "form-control", placeholder = "Enter Company Name" })
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Company_Name, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-secondary" for="Company_Email">Company Email</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-primary text-white"><i class="fa fa-envelope"></i></span>
+                        @Html.TextBoxFor(m => m.Company_Email, new { @class = "form-control", placeholder = "example@domain.com", type = "email" })
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Company_Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-secondary" for="Company_Phone">Company Phone</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-primary text-white"><i class="fa fa-phone"></i></span>
+                        @Html.TextBoxFor(m => m.Company_Phone, new { @class = "form-control", placeholder = "Phone Number" })
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Company_Phone, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-secondary" for="Company_City">Company City</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-primary text-white"><i class="fa fa-city"></i></span>
+                        @Html.TextBoxFor(m => m.Company_City, new { @class = "form-control", placeholder = "City" })
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold text-secondary" for="Company_Country">Company Country</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-primary text-white">
+                            <i class="fa fa-globe"></i>
+                        </span>
+                        <select asp-for="Company_Country" class="form-select" id="countryDropdown" asp-items="ViewBag.Countries">
+                            <option value="">Select Country</option>
+                        </select>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Company_Country, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold text-secondary" for="Company_State">Company State</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-primary text-white">
+                            <i class="fa fa-map"></i>
+                        </span>
+                        <select asp-for="Company_State" class="form-select" id="stateDropdown">
+                            <option value="">Select State</option>
+                            @if (ViewBag.States != null)
+                            {
+                                foreach (var item in ViewBag.States)
+                                {
+                                    <option value="@item.Value" selected="@(item.Value == Model.Company_State ? "selected" : null)">
+                                        @item.Text
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Company_State, "", new { @class = "text-danger" })
+                </div>
+
+                <script>
+                                    $(document).ready(function () {
+                                    function loadStates(country, selectedState) {
+                                 if (country) {
+                                                $.ajax({
+                                                      url: '/Company/GetStatesByCountry',
+                                                      type: 'GET',
+                                                      data: { country: country },
+                                                      success: function (states) {
+                                                      $('#stateDropdown').empty().append('<option value="">Select State</option>');
+                                                      $.each(states, function (i, state) {
+                                                             $('#stateDropdown').append('<option value="' + state.value + '" ' + (state.value === selectedState ? 'selected' : '') + '>' + state.text + '</option>');
+                                                    });
+                                             }
+                                      });
+                            }
+                         }
+                            var initialCountry = $('#countryDropdown').val();
+                            var initialState = '@Model.Company_State'; // Razor injection
+                            loadStates(initialCountry, initialState);
+
+                        $('#countryDropdown').change(function () {
+                            var country = $(this).val();
+                            loadStates(country, '');
+                        });
+                    });
+                </script>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-secondary" for="Company_ZipCode">Company ZipCode</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-primary text-white"><i class="fa fa-map-pin"></i></span>
+                        @Html.TextBoxFor(m => m.Company_ZipCode, new { @class = "form-control", placeholder = "Zip Code" })
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Company_ZipCode, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="col-md-12">
+                    <label class="form-label fw-bold text-secondary" for="Company_Address">Company Address</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-primary text-white"><i class="fa fa-home"></i></span>
+                        @Html.TextAreaFor(m => m.Company_Address, new { @class = "form-control", placeholder = "Full Address", rows = 3 })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-secondary" for="Company_Website">Company Website</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-primary text-white"><i class="fa fa-globe"></i></span>
+                        @Html.TextBoxFor(m => m.Company_Website, new { @class = "form-control", placeholder = "https://yourcompany.com" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-secondary" for="Company_IndustryType">Industry Type</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-primary text-white"><i class="fa fa-industry"></i></span>
+                        @Html.TextBoxFor(m => m.Company_IndustryType, new { @class = "form-control", placeholder = "Industry Type" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-secondary" for="Company_TaxId">Tax ID</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-primary text-white"><i class="fa fa-id-card"></i></span>
+                        @Html.TextBoxFor(m => m.Company_TaxId, new { @class = "form-control", placeholder = "Tax ID" })
+                    </div>
+                </div>
+
+                @*   <div class="col-md-6">
+                    <label class="form-label fw-bold text-secondary" for="Company_RegistrationDate">Registration Date</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-primary text-white"><i class="fa fa-calendar"></i></span>
+                        @Html.TextBoxFor(m => m.Company_RegistrationDate, new { @class = "form-control", type = "date" })
+                    </div>
+                </div> *@
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-secondary" for="Company_RegistrationDateTime">Registration Date</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-primary text-white"><i class="fa fa-calendar"></i></span>
+                        <input asp-for="Company_RegistrationDate" class="form-control" type="datetime-local" />
+                    </div>
+                    @Html.ValidationMessageFor(m => m.Company_RegistrationDate, "", new { @class = "text-danger" })
+                </div>
+
+
+                <div class="col-md-12">
+                    <label class="form-label fw-bold text-secondary" for="Company_Description">Company Description</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-primary text-white"><i class="fa fa-info-circle"></i></span>
+                        @Html.TextAreaFor(m => m.Company_Description, new { @class = "form-control", rows = 3, placeholder = "Brief description about the company..." })
+                    </div>
+                </div>
+
+                <div class="col-md-4 mt-3">
+                    <label class="form-label fw-bold text-secondary">Is Active?</label>
+                    <div class="form-check">
+                        @Html.CheckBoxFor(m => m.IsActive, new { @class = "form-check-input", id = "isActive" })
+                        <label class="form-check-label" for="isActive">Yes</label>
+                    </div>
+                </div>
+
+                <div class="col-12 mt-4 text-end">
+                    <button type="submit" class="btn btn-success me-2">
+                        <i class="fa fa-save"></i> Update
+                    </button>
+                    @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-secondary" })
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
