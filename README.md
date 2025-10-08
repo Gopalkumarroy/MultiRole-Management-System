@@ -61,4 +61,4 @@ Built with a full-stack approach: **ASP.NET Core MVC, SQL Server, Angular, Boots
 ### Installation  
 1. Clone the repo  
    ```bash
-   git clone https://github.com/yourusername/MultiRole-Management-System.git
+   git clone https://github.com/Gopalkumarroy/MultiRole-Management-System.git
