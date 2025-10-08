@@ -48,7 +48,6 @@ Built with a full-stack approach: **ASP.NET Core MVC, SQL Server, Angular, Boots
 🎥 [Watch Project Walkthrough](#) Providing Soon 
 *(Attach your Loom/Drive/YouTube link here showing key flows: Admin approving KYC, Manager referral system, Provider registration, Certificate generation)*  
 
----
 
 ## 🚀 Getting Started  
 
